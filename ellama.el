@@ -1498,17 +1498,10 @@ otherwise prompt user for URL to summarize."
   (let ((buffer-name (url-retrieve-synchronously url t)))
     ;; (display-buffer buffer-name)
     (with-current-buffer buffer-name
-      (goto-char (point-min))
-      (or (search-forward "<!DOCTYPE" nil t)
-          (search-forward "<html" nil))
+      (goto-char url-http-end-of-headers)
       (beginning-of-line)
       (kill-region (point-min) (point))
       (shr-insert-document (libxml-parse-html-region (point-min) (point-max)))
-      (goto-char (point-min))
-      (or (search-forward "<!DOCTYPE" nil t)
-          (search-forward "<html" nil))
-      (beginning-of-line)
-      (kill-region (point) (point-max))
       (ellama-summarize))))
 
 (defun ellama-get-ollama-local-model ()
